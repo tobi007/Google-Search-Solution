@@ -1,0 +1,38 @@
+{
+    "short_name": "Google Search Solution",
+    "name": "Google Search Solution",
+    "icons": [
+        {
+          "src": "icon.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        },
+        {
+          "src": "icon.png",
+          "sizes": "144x144",
+          "type": "image/png"
+        },
+        {
+          "src": "icon.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+    ],
+  
+    "permissions": [
+        "tabs",
+        "activeTab"
+    ],
+    "manifest_version": 2,
+    "version": "0.0.1",
+    "browser_action": {
+      "default_popup": "index-popup.html",
+      "default_title": "Google Search Solution"
+    },
+    "background": {
+        "scripts": ["app/background.js"]
+    },
+    "chrome_url_overrides" : {
+        "newtab": "index-newtab.html"
+    }
+}  

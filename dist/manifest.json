@@ -1,0 +1,24 @@
+{
+    "short_name": "Google Search Solution",
+    "name": "Google Search Solution",
+    "icons": {
+        "128": "icon.png"
+    },
+  
+    "permissions": [
+        "tabs",
+        "activeTab"
+    ],
+    "manifest_version": 2,
+    "version": "0.0.1",
+    "browser_action": {
+      "default_popup": "index-popup.html",
+      "default_title": "Google Search Solution"
+    },
+    "background": {
+        "scripts": ["app/background.js"]
+    },
+    "chrome_url_overrides" : {
+        "newtab": "index-newtab.html"
+    }
+}  
