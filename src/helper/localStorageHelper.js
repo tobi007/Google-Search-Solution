@@ -1,38 +1,34 @@
 export const getItem = key => window.localStorage.getItem(key);
 export const setItem = (key, value) => window.localStorage.setItem(key, value);
 
-export const getObject = key => {
+
+
+const getObject = (key, call_back) => {
   const result = getItem(key);
   try {
-    return JSON.parse(result);
+    let localStoragePages = JSON.parse(result);
+    if (localStoragePages === undefined || localStoragePages === null) {
+        localStoragePages = []
+    }
+    call_back(localStoragePages);
   } catch (e) {
-    return result;
+    call_back([]);
   }
 };
 
-export const setObject = (key, object) => {
+const setObject = (key, object, call_back) => {
   const value = JSON.stringify(object);
   setItem(key, value);
+  getObject(key, call_back)
 };
 
-export const get = key => {
-  const result = getObject(key);
-  if (result) {
-    return result.data;
-  }
-  return result;
-};
+const setBadge = (counts) => {
+    console.log('Batch Text')
+}
 
-export const getLastUpdated = key => {
-  const result = getObject(key);
-  if (result) {
-    return result.lastUpdated;
-  }
-  return result;
-};
 
-export const set = (key, data) =>
-  setObject(key, {
-    data,
-    lastUpdated: new Date()
-});
+export const localStorage = {
+    setObject: setObject,
+    getObject: getObject,
+    setBadge: setBadge
+}

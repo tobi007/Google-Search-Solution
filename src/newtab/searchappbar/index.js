@@ -69,14 +69,14 @@ export default function SearchAppBar({ pages, searchPages }) {
       <AppBar position="static">
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
-            Google Search Solution
+            PIN TO READ
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
             <InputBase
-                disabled={!pages > 0}
+                disabled={pages < 1}
               placeholder="Search…"
               classes={{
                 root: classes.inputRoot,

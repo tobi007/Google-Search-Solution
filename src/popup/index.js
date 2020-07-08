@@ -44,11 +44,11 @@ function PopupPage({ pages, addPage }) {
                 <Grid container justify="center" >
                     <Button variant="contained" color="primary"
                         onClick={() => setIsShowAddPageForm(true)}>
-                        Add Currrent Page
+                        PIN Currrent Page
                     </Button>
                     <br/>
                     <Typography className={classes.copyright} variant="overline" color="textSecondary" onClick={goWebsite}>
-                        View Added Pages
+                        View Pinned Pages
                     </Typography>
                 </Grid>
             }

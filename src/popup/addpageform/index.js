@@ -36,21 +36,30 @@ function AddPageForm({ handleAddPageFormSubmit }) {
     const [title, setTitle] = React.useState('');
     const [comment, setComment] = React.useState('');
 
-    const GetPageURLFromChrome = () => {
+    const getPageURLFromChrome = () => {
         if (process.env.REACT_APP_PROFILE === 'dev') {
             setPageURL(window.location.href)
+            setTitle('Dev Title')
         } else {
             chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {            
                 const url = tabs[0].url;
                 setPageURL(url)
+                setTitle(tabs[0].title)
             });
         }
+    }
+
+    const getPageIconFromGoogle = () => {
+        var domain = pageURL.replace('http://', '').replace('https://', '').split(/[/?#]/)[0];
+        var imgURL = "https://www.google.com/s2/favicons?domain_url=" + domain;
+        return imgURL;
     }
 
     const handleSubmit = (event) => {
         event.preventDefault()
         handleAddPageFormSubmit({
             url: pageURL,
+            imgURL: getPageIconFromGoogle(),
             title: title,
             comment: comment,
             createdOn: moment().format('MMMM DD, YYYY')
@@ -59,7 +68,7 @@ function AddPageForm({ handleAddPageFormSubmit }) {
 
     React.useEffect(() => {
         if (!pageURL || pageURL === '') {
-            GetPageURLFromChrome();
+            getPageURLFromChrome();
         }
     })
 
@@ -90,15 +99,24 @@ function AddPageForm({ handleAddPageFormSubmit }) {
                             </Tooltip>
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                name="title"
-                                label="Title"
-                                id="title"
-                                onChange={e => setTitle(e.target.value)}
-                            />
+                            <Tooltip 
+                                TransitionComponent={Zoom}
+                                title={title} 
+                                arrow
+                            >
+                                <TextField
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    name="title"
+                                    label="Title"
+                                    id="title"
+                                    value={title}
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}                            
+                                />
+                            </Tooltip>
                         </Grid>
                         <Grid item xs={12}>
                             <TextField

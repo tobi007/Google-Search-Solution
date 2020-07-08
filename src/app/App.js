@@ -3,8 +3,10 @@ import './App.css';
 
 import PopupPage from '../popup';
 import NewTab from '../newtab';
-import { setObject, getObject } from '../helper/localStorageHelper'
+import { localStorage } from '../helper/localStorageHelper'
+import { chromeStorage } from '../helper/chrome'
 
+const dataStore = process.env.REACT_APP_PROFILE === 'dev' ? localStorage : chromeStorage
 
 class App extends React.Component {
 
@@ -12,42 +14,35 @@ class App extends React.Component {
         super(props);
         this.state = {
             pages: [],
-            filteredpages: []
+            filteredpages: [],
+            searchLiteral: ''
         }
     }
 
-    componentDidMount() {
-        let localStoragePages = getObject('pages');
-        if (localStoragePages === undefined || localStoragePages === null || localStoragePages.length === 0) {
-            localStoragePages = []
-        }  
+    setPages = (pages) => {
         this.setState({
-            pages: localStoragePages,
-            filteredpages: localStoragePages
+            pages: pages,
+        }, () => {
+            this.searchPages(this.state.searchLiteral);
+            dataStore.setBadge(this.state.pages.length)
         })
-        setObject('pages',localStoragePages)
+    }
+
+    componentDidMount() {
+        dataStore.getObject('pages', this.setPages);
     }
 
     deletePage =(pageId) => {
         const newPageList = this.state.pages.filter(({ url }) => url !== pageId);
-        const newFilteredPageList = this.state.filteredpages.filter(({ url }) => url !== pageId);
-        setObject('pages', newPageList);
-        this.setState({
-            pages: newPageList,
-            filteredpages: newFilteredPageList
-        })
+        dataStore.setObject('pages', newPageList, this.setPages);
     }
 
     addPage =(newPage) => {
         const newPageList = [...this.state.pages, newPage]
-        setObject('pages', newPageList);
-        this.setState({
-            pages: newPageList,
-        })
+        dataStore.setObject('pages', newPageList, this.setPages);
     }
 
     searchPages = (searchLiteral) => {
-        console.log(searchLiteral)
         if (searchLiteral === '') {
             this.setState({
                 filteredpages: this.state.pages,
@@ -75,7 +70,6 @@ class App extends React.Component {
     render(){
 
         let url = window.location.href;
-        console.log('URL: ', url)
         if (!url.includes('index-newtab.html')) {
             return (
                 <PopupPage pages={this.state.pages} addPage={this.addPage} />

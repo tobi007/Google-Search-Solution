@@ -1,19 +1,20 @@
 {
-    "short_name": "Google Search Solution",
-    "name": "Google Search Solution",
+    "short_name": "Pin To Read",
+    "name": "Pin To Read",
     "icons": {
         "128": "icon.png"
     },
   
     "permissions": [
         "tabs",
-        "activeTab"
+        "activeTab",
+        "storage"
     ],
     "manifest_version": 2,
     "version": "0.0.1",
     "browser_action": {
       "default_popup": "index-popup.html",
-      "default_title": "Google Search Solution"
+      "default_title": "Pin To Read"
     },
     "background": {
         "scripts": ["app/background.js"]
